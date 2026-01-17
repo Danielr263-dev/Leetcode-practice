@@ -1,0 +1,22 @@
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> tony = new HashMap<>();
+        //hashmap object creation
+
+        for(int i = 0; i < nums.length; i++)
+        {
+            int dif = target - nums[i];
+            //calculate the nums u need to add up to target, both have to exist at some pt
+            if(tony.containsKey(dif))
+                return new int[]{i, tony.get(dif)};
+            //if either # already exists in hashmap, return it and its partner as new int array
+
+            else
+                tony.put(nums[i], i);
+
+            //otherwise insert the current value and its "key" which is the order in which it was inserted to the hashmap
+        }
+        return null;
+        //if no #'s add up to target, then nothing in the array can, return null
+    }
+}
