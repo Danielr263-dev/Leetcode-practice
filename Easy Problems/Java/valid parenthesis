@@ -1,0 +1,27 @@
+class Solution{
+    public bloolean isValid(String s) {
+        Stack <Character> stack = new Stack <Character>();
+        //creates a empty stack
+
+        for(char c: s.toCharArray()){
+            //loop through each character in s
+
+            if(c == '(')
+                stack.push(')');
+            else if(c == '{')
+                stack.push('}');
+            else if(c == '[')
+                stack.push(']');
+            else if(stack.isEmpty() || stack.pop() != c)
+                return false
+
+            /*the stack.isEmpty() would kick in an example like
+            so: "()}", or if you have a string with no opening brackets */
+            
+            /*if the stack is empty or the top doesn't
+            match the closing bracket, string is not valid
+            */
+        }
+        return stack.isEmpty();
+    }
+}

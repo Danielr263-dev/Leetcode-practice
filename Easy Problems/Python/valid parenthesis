@@ -1,0 +1,56 @@
+class Solution:
+    def isValid(self, s: str) -> bool:
+        #In python, a funciton is usually wrapped in a class
+
+        '''
+        the def function: defines a method isValid tha takes
+        self: standard first parameter for any class method in python
+        s: str: s is expected to be a string
+        -> bool: the method will return a boolean value 
+        '''
+
+        '''
+        Initialize an empty stack and a hash map for matching brackets.
+        In python, lists can act like stacks using append(),
+        push(), and pop().
+        ''' 
+        stack = []
+        hash = {')' : '(', ']' : '[', '}' : '{'}
+        #hash is a dictionary that maps each closing bracket to its opening bracket. dictionary = collection of key, value pairs
+
+        #Loop through each character in the string
+        for char in s:
+            #char will be each character, one by one
+            if char in hash:
+                #checks if char is a key in hash
+
+                if stack and stack[-1] == hash[char]:
+                    '''
+                    "stack": in python, an empty list is false when used in boolean
+                    context, so stack alone checks if the stack is not empty.
+                    "stack[-1]": this access the last element of the list (top the stack).
+                    "hash[char]": looks up corresponding opening bracket for this closing bracket.
+
+                    all together: if the stack is not empty and the top of the stack matches the expected
+                    opening bracket for this closing bracket, then...
+                    '''
+                    stack.pop() #Remove the matching opening bracket
+                else:
+                    return False
+                    '''
+                    if either the stack is empty or the top of the
+                    stack doesn't match the expected opening bracket,
+                    the string is invalid
+                    '''
+            else:
+                stack.append(char)
+                '''
+                if char is not a closing bracket (opening bracket),
+                push it onto the stack
+                '''
+        '''
+        return true if stack is empty (all brackets matched),
+        false otherwise
+        '''
+        return not stack
+        
