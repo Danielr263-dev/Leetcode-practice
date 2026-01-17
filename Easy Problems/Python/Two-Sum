@@ -1,0 +1,18 @@
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+
+        '''python methods must include "self" which is the same as "this" in java, 
+        referring to the current object '''
+
+        pair_idx = {}
+        '''this is a dictionary creation which is kind of like a hashmap, stores key->value pairs the same '''
+
+        for i, num in enumerate(nums):
+            '''enumerate(something) gives you both the idx and value at the same time. in this case i = idx, num = number '''
+            if target - num in pair_idx:
+                '''if target - num is in the dictionary called pair_idx'''
+                return [i, pair_idx[target-num]]
+            pair_idx[num] = i
+            '''ofc this is the 'else' condition'''
+        
+        
