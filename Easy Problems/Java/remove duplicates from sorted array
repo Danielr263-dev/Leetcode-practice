@@ -1,0 +1,21 @@
+class Solution {
+    public int removeDuplicates(int[] nums) {
+       int comparer = 1;
+       //start at 1 spot after the beginning
+
+       for(int i = 1; i < nums.length; i++){
+        //loop starts 1 spot after the beginning to have good comparison
+        if(nums[i] != nums[i - 1]){
+            //we'll compare 2nd item and first item
+            nums[comparer] = nums[i];
+            comparer++;
+        }
+       }
+       return comparer;
+       /*logic goes like this: we start with 2nd item to make sure
+       indexing isn't off. then we compare 2nd item with first and if
+       they're not equal, then we turn the spot at comparer
+       (which starts at 1 for indexing purposes) into what nums[i] is. 
+       */
+    }
+}
