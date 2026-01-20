@@ -17,5 +17,15 @@ class Solution {
        they're not equal, then we turn the spot at comparer
        (which starts at 1 for indexing purposes) into what nums[i] is. 
        */
+
+       /*Thinking process for this kind of problem:
+       The trick is to have something that holds "in place" so for this question we have an int.
+       Then, we have to have some condition. In this case the condition is if the current # != prevous #. If that 
+       is the case, then we have the holder move +1 alongside the current that moves with the for loop. If at 
+       any time we find a comparison where they're equal, the holder is not moved, and it stays there until we
+       find another comparison where they're no longer equal, at which point the position at holder is set to
+       the current value where the comparison for equality failed. This makes sure that only nonduplicates 
+       get moved to the leftmost part of the array, and if there's no duplicates, then nothing happens as
+       the holder moves up with the for loop, hence the holder is set to the same pos as current value.  */
     }
 }
