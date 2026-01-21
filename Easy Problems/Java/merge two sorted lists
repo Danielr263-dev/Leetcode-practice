@@ -1,0 +1,26 @@
+class Solution{
+    public ListNode mergeTwoLists(Listnode list1, ListNode list2)
+    {
+        //this solution implements recursion, so rt won't be too too great
+        if list1 != null && list2 != null
+        {
+            if(list1.val < list2.val)
+            {
+                list1.next = mergeTwoLists(list1.next, list2);
+                return list1;
+            }
+            else
+            {
+                list2.next = mergeTwoLists(list1, list2.next);
+            }
+        }
+        /*when comparing the nodes, the node with smaller val will have its node.next point to what's returned when 
+        we start coming back. */
+
+        if(list1 == null)
+            return list2;
+        return list1;
+        //if either list is empty, return the non-empty list
+
+    }
+}
