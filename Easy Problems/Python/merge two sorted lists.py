@@ -20,3 +20,5 @@ class Solution:
         if list1 is None:
             return list2
         return list1
+        '''have to understand both java and python implementations of all problems, and start medium 
+        type problems soon '''
