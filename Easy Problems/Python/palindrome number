@@ -12,3 +12,5 @@ class Solution:
             '''in python '/' is float division and '//' is int division'''
 
         return rev == x
+
+        '''new problem incoming soon as this hw gets down btw'''
