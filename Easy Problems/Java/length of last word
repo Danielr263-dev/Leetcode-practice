@@ -1,0 +1,22 @@
+import java.util.ArrayList;
+
+class Solution {
+    public int lengthOfLastWord(String s) {
+
+        /*thinking here is that we'll split up the words by spaces, and in a for loop, have an if condition
+        that checks the last thing in the array we create, take its length and return that */
+
+        String[] words = s.split(" ");
+        //takes string called s and splits it by spaces, and String[] is only needed since we "know" the amount when doing this given s 
+        int lastWordCounter = 0;
+
+        for(int i = 0; i < words.length; i++)
+        {
+            if(i == words.length-1)
+            {
+                lastWordCounter = words[i].length();
+            }
+        }
+        return lastWordCounter;
+    }
+}
