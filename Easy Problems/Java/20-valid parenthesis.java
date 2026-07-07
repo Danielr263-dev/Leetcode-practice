@@ -1,5 +1,7 @@
+import java.util.Stack;
+
 class Solution{
-    public bloolean isValid(String s) {
+    public boolean isValid(String s) {
         Stack <Character> stack = new Stack <Character>();
         //creates a empty stack
 
@@ -13,7 +15,7 @@ class Solution{
             else if(c == '[')
                 stack.push(']');
             else if(stack.isEmpty() || stack.pop() != c)
-                return false
+                return false;
 
             /*the stack.isEmpty() would kick in an example like
             so: "()}", or if you have a string with no opening brackets */
