@@ -1,0 +1,50 @@
+class Solution {
+    public int lengthOfLongestSubstring(String s) {
+
+        /*got a string s, have to find the len of longest SUBSTRING w/o duplicate chars
+        substring = continuous sequence of chars within a longer string
+
+        resembles sliding window a little. 
+
+        return the # of unique chars the substring is, not the substring itself
+        we can have the hashmap just keep track of the chars themselves, since we only care about the longest sequence, then when we encounter a duplicate, reset the counter, and return the longest counter */
+
+        /*int counter = 0;
+        HashMap<Character, Integer> seen = new HashMap<>();
+
+        for(int i = 0; i < s.length(); i++)
+        {
+            if(seen.containsKey(s.charAt(i))){
+                if(seen.size() > counter)
+                    counter = seen.size();
+                seen.clear();
+            }
+            seen.put(s.charAt(i), i);
+        }
+        return counter;
+        
+        prev solution that doesn't handle cases like " " & "dvdf" because we don't delete the duplicate char itself and start from here
+        */
+
+        int left = 0;
+        int maxLen = 0;
+        HashSet<Character> charSet = new HashSet<>();
+        //stores only 1 thing, unlike hashmap/hashtable
+
+        for(int right = 0; right < s.length(); right++)
+        {
+            while(charSet.contains(s.charAt(right)))
+            {
+                charSet.remove(s.charAt(left));
+                left++;
+                 /*left/right hold the len of the the subsequence like a sliding window, where once we hit a duplicate char, the char is removed from the set via left, and left only moves once a char has been removed, and it moves to the right. that way left and right only ever contain non-duplicates. */
+            }
+            charSet.add(s.charAt(right));
+            //adding to the set non-dups
+
+            maxLen = Math.max(maxLen, right - left + 1);
+            //at each iter, max is checked against current subsequence
+        }
+        return maxLen;
+    }
+}
