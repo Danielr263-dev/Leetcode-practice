@@ -1,0 +1,27 @@
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+
+        HashMap<String, ArrayList<String> > tonay = new HashMap<>();
+
+        for(int i = 0; i < strs.length; i++)
+        {
+            char temp[] = strs[i].toCharArray();
+            Arrays.sort(temp);
+
+            String key = new String(temp);
+
+            if(tonay.containsKey(key))
+                tonay.get(key).add(strs[i]);
+
+            else
+            {
+                tonay.put(key, new ArrayList<>());
+                tonay.get(key).add(strs[i]);
+            }
+        }
+        List<List<String>> him = new ArrayList<>();
+        him.addAll(tonay.values());
+        return him;
+        
+    }
+}
