@@ -1,0 +1,39 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int minDepth(TreeNode root) {
+
+        //base case if subtree empty, root null 
+        if (root == null)
+            return 0;
+        int leftDepth = minDepth(root.left);
+        int rightDepth = minDepth(root.right);
+        
+        //if both subtres are empty
+        if(root.left == null && root.right == null)
+            return 1;
+        //if left subtree is empty, return depth of right subtree after adding 1 to it
+        if(root.left == null)
+            return 1 + rightDepth;
+        //if right subtree is empty, return depth of left subtree after adding 1 to it
+        if(root.right == null)
+            return 1 + leftDepth;
+        return Math.min(leftDepth, rightDepth) + 1;
+        //adding 1 to account for current node (in case tree is only curr root)
+
+        /*algo works in that left and right sides are traversed to their end before starting anything. From there, the cases activate. DFS had opposite where cases happen before you traverse, check if BFS is opposite and needs you to traverse before looking at cases */
+    }
+}
