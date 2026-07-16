@@ -1,0 +1,31 @@
+class Solution {
+    public int majorityElement(int[] nums) {
+        int majority = 0;
+        HashMap<Integer, Integer> counter = new HashMap<>();
+        for(int i = 0; i < nums.length; i++)
+        {
+            if(!counter.containsKey(nums[i]))
+            {
+                //if key not found, add to hashmap with val of 1
+                counter.put(nums[i], 1);
+            }
+            else
+            {
+                //otherwise find it and insert it +1
+                counter.put(nums[i], counter.get(nums[i])+1);
+            }
+
+            if(counter.get(nums[i]) > nums.length/2)
+            {
+                //if the val at nums[i] > nums len / 2
+                if(counter.get(nums[i]) > majority)
+                {
+                    //if val at nums[i] > majority
+                    majority = nums[i];
+                }
+            }
+        }
+        return majority;    
+        //returns elements that appear more than n/2 and most times
+    }
+}
