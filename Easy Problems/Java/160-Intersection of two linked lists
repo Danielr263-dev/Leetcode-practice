@@ -1,0 +1,31 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+
+        ListNode lista = headA;
+        ListNode listb = headB;
+        /* to set both lists to same len, have both pt to head of other when they reach
+        their own end*/
+
+        while(lista != listb)
+        {
+           //they'll eventually be equal to each other no matter what, thats when exit  
+            lista = (lista != null) ? lista.next : headB;
+            listb = (listb != null) ? listb.next : headA;
+            /*switch to other list's head when own list end reached. syntax is 
+            another way of writing an if condition followed by the results on either side of the : symbol, w/ left being if true, and right being if false*/
+        }
+        return lista;
+        /*since they'll be equal no matter what eventually, either null or intersection node will be returned*/
+    }
+}
