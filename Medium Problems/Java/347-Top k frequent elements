@@ -1,0 +1,46 @@
+class Solution {
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer, Integer> tony = new HashMap<>();
+        /*to hold the nums with their occurance values*/
+        int size = nums.length;
+
+        for(int numbers : nums)
+        {
+            tony.put(numbers, tony.getOrDefault(numbers, 0) + 1);
+            /*puts into hashmap either the val at the key, OR if the key doesn't exist, puts it w/ 0 + 1*/
+        }
+        
+        List<Integer>[] bucket = new List[size + 1];
+        /*creates list with size + 1 to not deal w/ 0 as idx. since we'll be using the idx of bucket as # of occurance, doesn't make sense to note anything w/ occurance of 0*/
+        
+        for(int i = 0; i < bucket.length; i++)
+        {
+            bucket[i] = new ArrayList<>();
+        }
+        /*create arraylist at each idex as certain numbers may occur the same # of times. for ex: 5 & 6 could occur 2 times, in that case, both would be at bucket[2].*/
+
+        for(Map.Entry<Integer, Integer> i : tony.entrySet())
+        {
+            int frequencyIdx = i.getValue();
+            int element = i.getKey();
+            bucket[frequencyIdx].add(element);
+        }
+
+        int answer[] = new int[k];
+        int count = 0; 
+
+        for(int i = bucket.length-1; i > 0; i--)
+        {
+            /*total bucket len is size + 1 but idx wise, there is no size + 1, so we take its size and -1 to get the correct max idx. (ex: if bucket.length = 5, then size + 1 = 6, but idx 6 doesn't exist, so bucket.length - 1 = 5, correct idx.) Then we go revese (i--) until i > 0, as nun to check at bucket[0]*/
+            if(!bucket[i].isEmpty())
+            {
+                for(int num: bucket[i])
+                {
+                    answer[count++] = num;
+                    if(count == k) return answer;
+                }
+            }
+        }
+        return answer;
+    }
+}
