@@ -1,0 +1,32 @@
+class Solution {
+
+    public String encode(List<String> strs) {
+        /*possible encoding is very simple, just add the number 8 after and before every new word, so encoded string would be like: this8is8something8. then the decoding would be splitting up the string by the 8 and ignoring itself*/
+
+        /*prev is wrong approach, u have to consider that the string could be anything. so what information do we already have before we start anything about the strings. their size. use that */
+        String encoded_string = "";
+        for(String s : strs)
+        {
+            encoded_string += s.length() + "#" + s;
+        }
+        return encoded_string; 
+    }
+
+    public List<String> decode(String str) {
+        List<String> answer = new ArrayList<>();
+        int i = 0;
+        while(i < str.length())
+        {
+            int hashtag_idx = str.indexOf('#', i);
+            //find # starting from position i
+            int len = Integer.parseInt(str.substring(i, hashtag_idx));
+            //extract and turn number into int
+            String word = str.substring(hashtag_idx+1, hashtag_idx+1+len);
+            //grab the total word using its size and starting from 1 after hashtag
+            i = hashtag_idx + 1 + len;
+            //new starting point to do it again at end of word
+            answer.add(word);
+        }
+        return answer;
+    }
+}
