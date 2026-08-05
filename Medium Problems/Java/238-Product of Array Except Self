@@ -1,0 +1,51 @@
+/*class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        int product = 1;
+        int output[] = new int[nums.length];
+        for(int i = 0; i < nums.length; i++)
+        {
+            for(int j = 0; j < nums.length; j++)
+            {
+                if(j == i) continue;
+                product *= nums[j];
+            }
+            output[i] = product;
+            product = 1;
+        }
+        return output;
+    }
+}  */
+//O(n^2) inplementation above, crude but functional
+
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        /* create a new array that at any pos, curr pos = product of all 
+        other elements in array, for each pos in this new array*/
+
+        int answer[] = new int[nums.length];
+
+        for(int i = 0; i < nums.length; i++)
+        {
+            answer[i] = 1; //fils out answer array w/ 1's to not mess with any multiplication
+        }
+
+        for(int i = 0; i < nums.length; i++)
+        {
+            answer[i] *= left; 
+            //gets/puts product of everything to left of i
+            left *= nums[i]; 
+            //update running product of left side
+        }
+
+        for(int i = nums.length - 1; i >= 0; i--)
+        {
+            answer[i] *= right;
+            //gets/puts product of everything to right of i
+            right *= nums[i];
+            //update running product of right side
+        }
+
+        return answer;
+    }
+}
+//O(n) implementation above, REVIEW IT again
