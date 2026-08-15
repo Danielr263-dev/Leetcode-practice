@@ -1,0 +1,48 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode balanceBST(TreeNode root) {
+        //convert curr bst to array via in-order traversal
+        //find mid from array using mid formula accounting for possible overflow
+        //recrusively input left and right of mid to new bst in proper order
+        //in-order traversal: left -> root -> right
+
+        ArrayList<Integer> array = new ArrayList<>();
+        ogTreeTraversal(root, array);
+        int start = 0;
+        int end = array.size() - 1;
+        return balancedTreeCreation(array, start, end);
+    }
+
+    public TreeNode balancedTreeCreation(ArrayList<Integer> array, int start, int end)
+    {
+        if(start > end) return null;
+        int mid = start + (end - start) / 2;
+        TreeNode root = new TreeNode(array.get(mid));
+        root.left = balancedTreeCreation(array, start, mid-1);
+        root.right = balancedTreeCreation(array, mid+1, end);
+        return root;
+    }
+
+    public void ogTreeTraversal(TreeNode root, ArrayList<Integer> array)
+    {
+        if(root == null) return;
+        ogTreeTraversal(root.left, array);
+        array.add(root.val);
+        ogTreeTraversal(root.right, array);
+        return; 
+    }
+}
