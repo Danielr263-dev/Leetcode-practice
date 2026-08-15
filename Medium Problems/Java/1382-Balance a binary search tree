@@ -19,6 +19,8 @@ class Solution {
         //find mid from array using mid formula accounting for possible overflow
         //recrusively input left and right of mid to new bst in proper order
         //in-order traversal: left -> root -> right
+        //pre-order traversal: root -> left -> right
+        //post-order traversal: left -> right -> root
 
         ArrayList<Integer> array = new ArrayList<>();
         ogTreeTraversal(root, array);
