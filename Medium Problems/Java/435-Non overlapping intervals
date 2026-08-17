@@ -1,0 +1,36 @@
+class Solution {
+    public int eraseOverlapIntervals(int[][] intervals) {
+        //what marks "overlap" is when end of ith intervals > start of jth interval 
+        /*way to solve problem:
+        1) sort the intervals by starting position, least to greatest
+        2) compare the boundary of the first interval against the start of the 2nd. if
+        boundary > start, then there's overlap. TO pick the correct interval to get rid of
+        whichever interval has the biggest boundary/end, that one is the one to get rid of. why? because getting rid of the interval with bigger range, makes it more likely that other intervals will "fit" into the range without overlapping with each other further.
+        3) when you find 2 intervals that don't overlap, move the boundary to the next intervals boundary, and redo the comparison from that point forward
+        4) return the int count of how many intervals to get rid of */
+
+        Arrays.sort(intervals, (a,b) -> Integer.compare(a[0], b[0]));
+        /*What's it doing: sorting the arrays by custom order, as java cannot itself order a 2d array. takes the 2d array we're ordering "intervals", then we're telling it how we're comparing, by 2 intervals at a time (interval a and interval b), then -> tells them how the comparison is done, which is by Integer class compare function, the first idx of interval a and the first idx of interval b. idx 0 represents the start of the intervals as intervals are only [start, end] aka [0,1]. */
+        int count = 0;
+        int boundary = intervals[0][1];
+        for(int i = 1; i < intervals.length; i++)
+        {
+            if(boundary > intervals[i][0])
+            {
+                //if there's any overlap at all
+                boundary = Math.min(boundary, intervals[i][1]);
+                /*choosing the min boundary out of the 2 boundaries, as if the current boundary is smaller, then boundary isn't updated, and if its not, then it does to the new smaller boundary.
+                */
+                count++;
+                /*goal is to return smallest # of intervals we'd need to remove, using Math.min() we always choose to exclude the intervals that have greatest range, and thus count++ gives smallest count */
+            }
+            else
+            {
+                //otherwise if there's no overlap
+                boundary = intervals[i][1];
+                //new boundary
+            }
+        }
+        return count;
+    }
+}
