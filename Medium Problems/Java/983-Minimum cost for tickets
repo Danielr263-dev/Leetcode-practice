@@ -1,0 +1,49 @@
+class Solution {
+    public int mincostTickets(int[] days, int[] costs) {
+        /*days array are the days in the yr you'll travel, each day being 1-365. 
+        costs is an array where 1 day pass = costs[0] dollars, 7 day pass = costs[1] dollars, 30 day pass = costs[2] dollars. 
+        each pass is for consecutive travel, so if 7 day pass is acquired on day 2, then from days 2 - 7 we can travel (inclusive of start)
+
+        return min # of dollars needed to travel every day in the list of given days
+
+        how the math will work: when a pass is bought, it can only be used on consecutive days, so if 7-day pass is bought, 7 days will be used to travel, so the starting day matters for passes +1 day. least expensive combination of passes to travel all days is what's returned. 
+         
+        */
+
+        int dp[] = new int[days[days.length - 1]+1];
+        /*we do it like this, because we want to get the last value of the days array (given that the array is ordered least -> greatest, the last val will be the biggest val). using it, we want to create an array of the size of that biggest val, and to make sure we can access that val's index itself, we do +1 to the result
+        */
+
+        /*1) Now we need to go through the days array and note down what days specifically are travelled, as this will be a check to see if we need to do anything or nothing at all */
+
+        HashSet<Integer> daysTraveled = new HashSet<>();
+        for(int i = 0; i < days.length; i++)
+        {
+            daysTraveled.add(days[i]);
+        }
+
+        /*2) we loop through going all the way till the last day we travel. So the loop will be from 0 up to the biggest day in the days array (ex: 1-20). no point in including 0. why? read 3.
+          3) within the loop we'll check to see if i is a travel day or not. If so, we'll see which day pass will bring the min cost, and we'll do that by having i-1, i-7, i-30, as the day passes are for 1,7,30 days. */
+
+        dp[0] = 0;
+        for(int i = 1; i <= days[days.length-1]; i++)
+        {
+            if(daysTraveled.contains(i) == false)
+            {
+                //if i is NOT a travel day
+                dp[i] = dp[i-1];
+                /*current non-travel day is meant to be same as last day (no matter if last day was travel or not), meaning no updates are made based on current day */
+            }
+            else
+            {
+                //otherwise if i IS a travel day
+                /* 4) dp[i] will store the min cost between the 3 day pass options (1,7,30). Considering "how we get to i based on our 3 options" and considering how the passes cover consecutive days, and that we shouldn't consider future days as that doesn't make sense (can't predict future in this instance), we get either i-1, i-7, i-30. each of those are index's within dp, as each result gives the val of the running total that includes all days up to and including i. so: dp[i-1], dp[i-7], dp[i-30]. however, doing this alone results in neg index's, aka out of index exception. so we'll use Math.max() with 0 as the other option, to default to dp[0] = 0, in case of neg index's. so we get: result of the index that gives the cumulative min cost before current i + cost of pass to include range i - 1,7,30. dp[Math.max(0, i-1)] + cost[0], dp[Math.max(0, i-7)] + cost[1], dp[Math.max(0, i-30)] + cost[2]. */
+
+                dp[i] = Math.min(dp[Math.max(0,i-1)]+costs[0], Math.min(dp[Math.max(0,i-7)]+costs[1], dp[Math.max(0,i-30)]+costs[2]));
+            }
+        }
+        return dp[dp.length-1];
+        /* return the val at the last pos of the dp array and that is min val to include all travel days */
+    }
+}
+//not the most optimal solution however, LC has at 4MS, way below avg
