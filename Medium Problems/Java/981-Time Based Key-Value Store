@@ -1,0 +1,98 @@
+class TimeMap {
+    /*1) create hashmap that is made up of string key, value where the value is a arraylist bundle that includes int timestamp and string value.
+    2) when doing get(), on the key, you'll get the bundle as a result, so from there, to get back the greatest prev timestamp that is <= timestamp, you'll do binary search on the indexs till you find the appropriate timestamp.
+    3) We'll create a bundle class so that the array can be of that bundle type
+    Creation: HashMap<String, ArrayList<Bundle>> blank = new HashMap<>()
+    Seraching: blank.get(key) -> returns arraylist
+     */
+
+    class Bundle {
+        int timestamp;
+        String value;
+        Bundle(int timestamp, String value)
+        {
+            this.timestamp = timestamp;
+            this.value = value; 
+            /*.this refers to the current instance within this class  */
+        }
+    }
+    
+    HashMap<String, ArrayList<Bundle>> triStructure;
+
+    public TimeMap() {
+        triStructure = new HashMap<>();
+        /* method will be run only once, creating one TimeMap object, and thus one triStructure map. set/get will be called on this obj */
+        
+    }
+    
+    public void set(String key, String value, int timestamp) {
+        Bundle b = new Bundle(timestamp, value);
+        //new Bundle object b created with timestamp and value as the parts that make it up
+        if(triStructure.containsKey(key))
+        {
+            //if key already has a arraylist associated with it, add new incoming bundle to the arraylist of that key
+            triStructure.get(key).add(b);
+        }
+        else
+        {
+            ArrayList<Bundle> list = new ArrayList<>();
+            //arrayList that goes as the 2nd part of the triStructure hashmap, of type Bundle
+            triStructure.put(key, list);
+            //adds (key, list) pair to hashmap
+            list.add(b);
+            //adds b object to list within the hashmap, and no need to do triStructure.get(key).add(b), as everytime we're in this else statement, its to create a new list
+        }
+        
+    }
+    
+    public String get(String key, int timestamp) {
+        /*Thinking: 
+        1) does the key exist at all? If not, there's no corresponding values
+        2) if value exists, is there a timestamp smaller than current timestamp? if not, return empty string too
+        3) if there is a smaller timestamp, and there's multiple candidates, are you returning the biggest of them all up to current timestamp?
+        4) binary search will be needed
+        */
+        String result = "";
+        if(!triStructure.containsKey(key))
+        {
+            //if key doesn't exist, return empty string
+            return result;
+        }
+        //key exists atp
+        int left = 0;
+        int right = triStructure.get(key).size() - 1;
+        //right = size of list corresponding to key 
+        ArrayList<Bundle> list = triStructure.get(key);
+        //calls get on tristructure only once and saves a reference to it on list
+        while(left <= right)
+        {
+            int mid = left + (right - left) / 2;
+            if(list.get(mid).timestamp <= timestamp)
+            {
+                //if prev timestamp <= current timestamp
+                result = list.get(mid).value;
+                //get prev val and save it to result
+                left = mid+1;
+            }
+            else
+            {
+                right = mid-1;
+            }
+        } 
+        return result;
+    }
+}
+
+/**
+ * Your TimeMap object will be instantiated and called as such:
+ * TimeMap obj = new TimeMap();
+ * obj.set(key,value,timestamp);
+ * String param_2 = obj.get(key,timestamp);
+
+ Requirements: 
+ 1) must be able to store multiple values for the same key at different time stamps and retrieve the key's value at a certain timestamp
+ 2) the key pieces: values, keys, timestamps
+ 3) timestamp() initializes the object of the data structure
+ 4) void set() stores the key "key" with the value at the given time "timestamp"
+ 5) string get() returns a value such that "set" was called previously, with timestamp_prev <= timestamp. if there are multiple such values, it returns the value associated with the largest timestamp_prev. if no values, returns ""
+ */
