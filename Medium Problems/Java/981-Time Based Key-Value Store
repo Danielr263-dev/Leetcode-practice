@@ -1,9 +1,20 @@
 class TimeMap {
-    /*1) create hashmap that is made up of string key, value where the value is a arraylist bundle that includes int timestamp and string value.
-    2) when doing get(), on the key, you'll get the bundle as a result, so from there, to get back the greatest prev timestamp that is <= timestamp, you'll do binary search on the indexs till you find the appropriate timestamp.
-    3) We'll create a bundle class so that the array can be of that bundle type
-    Creation: HashMap<String, ArrayList<Bundle>> blank = new HashMap<>()
-    Seraching: blank.get(key) -> returns arraylist
+    /* Problem logic: 
+    1) Hashmap needed to hold (key, (timestamp, value)) pairs
+    2) Before that, object that can hold (timestamp, value) as a pair is needed, thus we construct
+    the Bundle class to hold these vals. 
+    3) Hashmap created outside any method or class so that its existence is persistent
+    4) TimeMap object is created once, so hashmap needs to be created alongside the object
+    5) Set() requires Bundle object b to exist so that (timestamp, value) pair is possible. Then,
+    we only add a new list to the hashmap if key doesn't exist. if key already exists, then we just
+    add the b object to the already-existing list corresponding to the appropriate key
+    6) Get() should return empty string if key doesn't exist. Otherwise key exists, and we need 
+    to find the biggest of the smallest prev timestamps. Binary search will be used. As long 
+    the timestamp at the mid location within the arraylist is <= current timestamp, we'll add 
+    the value at that timestamp to our result string, and update left accordingly. Otherwise, 
+    the timestamp is too big, and we'll update right accordingly, and continue this pattern till
+    left > right. 
+    7) return string
      */
 
     class Bundle {
