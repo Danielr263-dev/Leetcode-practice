@@ -1,0 +1,35 @@
+class Solution {
+    public int longestConsecutive(int[] nums) {
+
+        /*unsorted array of ints, return longest len of consecutive elements sequence, so not about finding the pattern in the array, moreso about finding the longest possible pattern, creating it, counting it, and returning the count */
+
+        HashSet<Integer> sorter = new HashSet<>();
+        for(int i = 0; i < nums.length; i++)
+        {
+            sorter.add(nums[i]);
+        }
+        if(nums.length == 0)
+            return 0;
+        int currCounter=1;
+        int longestCount=0;
+        /*now that we have a DS that can tell us whether #'s exist or not, if the pattern has to be sequential, then we need to check for the neighbors of the numbers that increase by 1. where do we start? by checking to see if nums[i] -1 does not exist, if this is true, then nums[i] is the start of its sequence.  */
+
+        for(int num : sorter)
+        {
+            if(!sorter.contains(num-1)) //beginning of sequence
+            {
+                currCounter=1;
+                while(sorter.contains(num+1))
+                {
+                    currCounter++;
+                    num=num+1;
+                }
+            }
+            
+            if(currCounter > longestCount)
+                longestCount = currCounter;
+        }
+        return longestCount;
+
+    }
+}
