@@ -1,0 +1,22 @@
+class Solution {
+    public boolean isPalindrome(String s) {
+
+        /*palindrome if after converting all uppercase to lowercase and removing all non-alphanumeric chars, reads the same forwards and backwards. in the palidrome, letters & nums are included */
+
+        /*first need to turn all upper to lower, then need to get rid of spaces, then need to exclude all non-alphanumeric (or could do all of that at the same time) */
+
+        s = s.toLowerCase().replaceAll("[^a-z0-9]", "");
+
+        int left = 0;
+        int right = s.length() - 1;
+        /*need pointers to go from left to right and right to left, stopping when L > R, to account the middle (will not be equal), but everything up to the middle should be */
+        while(left < right)
+        {
+            if(s.charAt(left) != s.charAt(right))
+                return false;
+            left++;
+            right--;
+        }
+        return true;
+    }
+}
