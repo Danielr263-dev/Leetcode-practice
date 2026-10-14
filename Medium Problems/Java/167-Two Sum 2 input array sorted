@@ -1,0 +1,27 @@
+class Solution {
+    public int[] twoSum(int[] numbers, int target) {
+        /*1-indexxed array of ints, already sorted in non-decereasing order (increasing), find 2 nums that add up to target & return their indeces as an int array of len 2*/
+
+
+        /*will use 2 pointers, left and right, as the bounds for an upcoming loop. want to use binary search to find the rightmost boundary (potentially cutting down on RT), then doing regular subtraction (target - currIdx) and storing result. result is stored in a hashmap, where key = num already viewed in array that has result of the subtration, and val = result of subtraction done previously (for 2 numbers to add up to target, they both must exist in the array, so yeah) */
+        HashMap<Integer, Integer> memory = new HashMap<>();
+        int result = 0;
+        int[] answer = new int[]{0,0};
+        //forget binary search, worst case RT is O(N)
+        //assuming we always get number.length >= 2
+
+        for(int i = 0; i < numbers.length; i++)
+        {
+            result = target - numbers[i];
+            if(memory.containsKey(result))
+            {
+                answer = new int[]{memory.get(result),i+1};
+            }
+            //otherwise
+            //key = #, val = idx
+            memory.put(numbers[i], i+1);
+        }
+        return answer;
+        /*so the biggest bug came from the indexing. the java array itself isn't 1 indexed, but we had to pretend it is, so the boundaries are 0 indexed (0 - len-1), but the answer and memory needs to treat it like its 1 indexed, hence why we have +1 for adding vals to memory and in the answer[] */
+    }
+}
