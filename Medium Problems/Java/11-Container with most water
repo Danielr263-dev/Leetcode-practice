@@ -1,0 +1,33 @@
+class Solution {
+    public int maxArea(int[] height) {
+        /*alright so each iter of height array represents a vertical line where the endpoints are (i,0) and (i, height[i]), for bottom and top. we'll take the closest and farthest lines (relative to 0 on the x-axis) and see what's the highest (relative to y-axis) that "water" can be filled up in, without "spilling" from the "container" the 2 lines make. */
+
+        /*remember its a 2 pointer kind of question, so the pattern is some sort of left,right stuff that changes based on some condition. usually sorting it helps, but in this situation, sorting the og array would change the index's, which would change the graph. we need to find the biggest value in the array, then find the 2nd biggest value and see how far apart they are relative to array index, then multiply height x len to get total. 
+
+        1,8,6,2,5,4,8,3,7
+        area formula: min([height[left], height[right]]) * right - left
+        */
+        int area = 0;
+        int left = 0;
+        int right = height.length-1; 
+        while(left <= right)
+        {
+            int currArea = Math.min(height[left], height[right]) * (right - left);
+            if(currArea > area)
+            {
+                area = currArea;//biggest area is now stored
+            }
+
+            if(height[left] <= height[right] )
+            {
+                left++;
+            }
+            else if(height[right] < height[left])
+            {
+                right--;
+            }
+            //if left == right, either movement shouldn't matter i think
+        }
+        return area; 
+    }
+}
