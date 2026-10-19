@@ -1,0 +1,44 @@
+class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+
+        /*sort it, then think about how that would help in the problem. break the problem down into subproblems. solve it like two sum. have pointer at leftmost, that moves left to right at each iter, and at the same time, deal with the rest of the array like a two sum problem with left, right pointers. */
+
+        List<List<Integer>> array = new ArrayList<>();
+        Arrays.sort(nums);//logn
+
+        for(int i = 0; i < nums.length; i++)
+        {
+            //i, left, right should never be equal, so set left to i+1 so its never the same as i no matter the iter. however this does not chekc for the value as these index's, those require a seperate check
+            if(i > 0 && nums[i] == nums[i-1]) continue; //same nums[i] val as prev, skip
+            int left = i+1;
+            int right = nums.length-1;
+            //dynamically reset left, completely reset right each, both each iter
+
+            while(left < right)
+            //left & right should never be equal either, if either crosses the other, no longer valid too, break
+            {
+                int a = nums[i];
+                int b = nums[left];
+                int c = nums[right];
+
+                if(a + b + c < 0)
+                    left++;
+                else if(a + b + c > 0)
+                    right--;
+                else
+                {
+                    List<Integer> triplets = new ArrayList<>();
+                    triplets.add(a);
+                    triplets.add(b);
+                    triplets.add(c);
+                    array.add(triplets);
+                    left++;
+                    right--;
+                    while(left < right && nums[left] == nums[left-1]) left++; //to skip any left duplicates and keep within bounds
+                    while(left < right && nums[right] == nums[right+1]) right--; //to skp any right duplicates and keep within bounds
+                }
+            }
+        }
+        return array; 
+    }
+}
