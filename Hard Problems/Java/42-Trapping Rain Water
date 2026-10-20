@@ -1,0 +1,46 @@
+class Solution {
+    public int trap(int[] height) {
+        /*another 2 point kind of question, so some left/right needs to move according to a certain use case. width is always 1, so only height matters for water being held. water held is found by taking the min of 2 bars that are used as the pillars that hold water, then taking the math of how much we need to add to each pilar between the other 2, to get them to add up to the other 2. 
+
+        we need 2 vars that hold pillars A & B. they are separate from left/right pointers.
+        if a certain pillars height = 0, skip it. 
+        can't sort the array as we'd lose positioning.
+        
+        Each iteration of the while does exactly one side:
+
+        Compare height[left] and height[right] to pick the side.
+        On that side only, run your two cases: bigger than the max means update the max, otherwise add the gap to the water.
+        Move that side’s pointer inward. */
+        int leftMax = 0;
+        int rightMax = 0;
+        int left = 0;
+        int right = height.length-1;
+        int water = 0;
+        while(left < right)
+        {
+            if(height[left] < height[right])
+            {
+                if(height[left] > leftMax)//store new left max & DONT add water 
+                /*logistically you can't add water as you found a new bigger bar, and u don't know how much water can fit as of rn */
+                    leftMax = height[left];
+
+                else//add water according to the gap size
+                    water = water + (leftMax - height[left]);
+
+                left++;
+            }
+            else //if (height[right] < / == height[left]
+            {
+                if(height[right] > rightMax)//store new right max & DONT add water 
+                    rightMax = height[right];
+                    
+                else//add water according to the gap size
+                    water = water + (rightMax - height[right]);
+
+                right--; 
+            }
+        }
+        return water;   
+    }
+    //70 mins to solve
+}
