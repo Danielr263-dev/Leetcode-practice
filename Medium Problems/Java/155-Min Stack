@@ -1,0 +1,47 @@
+class MinStack {
+    ArrayList<Integer> stack;//overall stack declared but not initialized
+    ArrayList<Integer> minArray;//stack to keep track of mins per push/pop
+
+    public MinStack() {
+        stack = new ArrayList<>();//stacks initialized
+        minArray = new ArrayList<>();
+    }
+    
+    public void push(int value) {
+        stack.add(value);//pushing" onto the arraylist
+        if(minArray.size() == 0) minArray.add(value);
+        else
+        {
+            if(value < minArray.get(minArray.size()-1))
+                minArray.add(value);//add new min val
+            else
+                minArray.add(minArray.get(minArray.size()-1));//add latest min val
+        }
+        //keeping track of mins per each push 
+    }
+    
+    public void pop() {
+        stack.remove(stack.size()-1);
+        minArray.remove(minArray.size()-1);
+        //eliminates from both min stack and reg stack
+    }
+    
+    public int top() {
+        int top = stack.get(stack.size()-1);//"pops" the most recently added element
+        return top;//returns top of stack
+    }
+    
+    public int getMin() {
+        int min = minArray.get(minArray.size()-1);//saves latest min in min array
+        return min;//returns that min
+    }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(value);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */
