@@ -1,0 +1,23 @@
+class Solution {
+    public int[] dailyTemperatures(int[] temperatures) {
+        int length = temperatures.length;
+        int answer[] = new int[length];//answer array
+        /*
+        current implementation thinking. we push onto stack and check if current array[i] > stack.top, and if so, we subtract array[i] - stack.top and add to answer[i] the result of that. otherwise, have a while 
+        */
+        Stack<Integer> awaitingTemps = new Stack<>();
+        /* stack to hold the idxs of temps that take longer than 1 day to find other temps greater than themselves in the array */
+        for(int i = 0; i < length; i++)
+        {
+            while(!awaitingTemps.isEmpty() && temperatures[awaitingTemps.peek()] < temperatures[i])
+            {
+                /*while stack is not empty && first stack item (prev item) < curr item*/
+                answer[awaitingTemps.peek()] = i - awaitingTemps.peek();
+                //the popped idx is where answer goes
+                awaitingTemps.pop();//get rid of the element now
+            }
+            awaitingTemps.push(i);
+        }
+        return answer;
+    }
+} //took 48 mins, not most optimal solution first try
