@@ -1,0 +1,35 @@
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        Stack<Integer> stack = new Stack<>();//stack to hold vals in increasing order
+        int maxArea = 0;
+        int n = heights.length;
+        for(int i = 0; i <= n; i++)
+        {
+            int currentHeight = (i==n) ? 0 : heights[i];
+            //currheight is dependent on i == n, if true, then its 0, otherwise its heights[i] so that once we hit a spot where there's bars left in the stack after we finished going through the array, we have something to compare them against (0) and we can calculate them and pop them from the stack. 
+
+            while(!stack.isEmpty() && currentHeight < heights[stack.peek()])
+            {
+                int height = heights[stack.pop()];//pop first keep the height
+                int width; 
+                if(stack.isEmpty()) width = i;
+                else
+                {
+                    width = i - stack.peek() - 1;//peek() is now the bar below
+                }
+                maxArea = Math.max(maxArea, height * width);
+            }
+            stack.push(i);//push index
+        }
+        return maxArea;
+    }
+}
+/*entire logic problem thinking: need to go through the whole heights array. going left to right, if we encounter any incoming height on right side that is bigger than last encountered height on left side, then that running rectangle ends BEFORE current height we just encountered. This means the stack we'll be using needs to store heights in increasing order (small to big) as when we encounter a small height, that ends the running rectangle. when this happens we need to calculate the area using correct width and height. 
+
+for loop runs the whole height array. we then have currHeight, for a special case. long as i != n, i = height[i], otherwise, its possible that in the stack we have leftover heights (by not encountering any smaller heights in the array) and so to deal with them (perform area calculations and pop them) we need a smaller value to compare them against. that's where i == n comes in, we setnt currHeight to 0 if this is the case and it balances out the stack. 
+
+then we have a while loop that runs true while stack is not empty and currHeight < top of stack. height is set to top of stack and we pop it right after. we set width but not declare it. width = i if stack is empty, as if stack is empty, the width is everything up to the current index we're on (we're keeping indexs in the stack btw). otherwise, the width is i - stack.peek() - 1, aka the new shortest bar's idx - tallest bar's idx still saved - 1 (as we have to account for not including the shortest bar we just found, as part of the width). maxArea = which ever is bigger, curr max area or new area (width x height), and its calculated no matter what. 
+
+outside that while loop, we push(i). outside both while and loop, we return maxArea. 
+RT: O(n), Space complexity: O(n), each bar is pushed and popped at most once, so O(n) time and the stack is O(n) in the worst case. 
+*/
