@@ -1,0 +1,40 @@
+class Solution {
+
+    class IntPair{//new class to have arraylist of pairs 
+        int position;
+        double time;
+
+        public IntPair(int position, double time)
+        {
+            this.position = position;
+            this.time = time;
+            //technicaly okay w/o constructor but good practice to know you're building it
+        }
+    }
+
+    public int carFleet(int target, int[] position, int[] speed) {
+        ArrayList<IntPair> pairList = new ArrayList<>();//arraylist of pairs
+        for(int i = 0; i < speed.length; i++)
+        {
+            double individualTime = ((double)target - (double)position[i]) / (double)speed[i];
+            //individual time of how long each car takes to get to target
+            IntPair pair = new IntPair(position[i], individualTime);
+            pairList.add(pair);
+        }
+        pairList.sort((a,b) -> Integer.compare(b.position, a.position));
+        //don't need to have Arrays.sort(...), if pairs is an array u can specific that and go forth from there. sort by position, closest to fartherest from target (biggest to smallest)
+
+        int fleet = 1;//assuming there's at least 1 car in the intial array
+        double timeTracker = pairList.get(0).time;
+        //meant to track max time of current fleet, as when greater is found, thats what makes a new fleet
+        for(int i = 1; i < pairList.size(); i++)
+        {
+            if(pairList.get(i).time > timeTracker)
+            {
+                fleet++;
+                timeTracker = pairList.get(i).time;
+            }
+        }
+        return fleet;  
+    }
+}
