@@ -1,0 +1,28 @@
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        /*look through 0 - m x n -1 as if it wasn't a 2d array, so set left/right/mid like regular and the while look as regular. however, because you get a 1d point as result, that needs to be converted to something that can read the matrix properly, row/col. use those to dereference places in matrix, and everything else is the same as classic binary search. regarding the formulas for row and col: row = how many full rows fit before it, which is mid / n in this case. col = how far into that row you are, which is the leftover after removing the full rows, which is mid % n in this case. used / for row to count hw many complete rows have been passed. use % for col to see whats left over inside curr row. and we use col (n) as the width of a row defines how positions wrap, so both questions "how many rows", "how far in" depend on it */
+
+        int left = 0;
+        int m = matrix.length;
+        int n = matrix[0].length;
+        int right = n * m - 1;
+        while(left <= right)
+        {
+            int mid = left + (right - left) / 2;
+            int row = mid / n;//will give row (context of within total rows 0-indexed)
+            int col = mid % n;//will give col (context of within total cols 0-indexed)
+
+            if(matrix[row][col] == target) return true;
+
+            else if(target > matrix[row][col])
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid - 1;
+            }
+        }
+        return false;
+    }
+}
