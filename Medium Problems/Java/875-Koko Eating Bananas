@@ -1,0 +1,36 @@
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int max = 0;
+        int n = piles.length;
+        for(int i = 0; i < n; i++)
+        {
+            if(piles[i] > max) max = piles[i];//finding max out of array for the right part in binary search
+        }
+
+        int left = 1;
+        int right = max;
+        int answer = max;//set to max in case no other min is found
+        while(left <= right)
+        {
+            long totalhrs = 0;
+            int k = left + (right - left) / 2;
+            for(int i = 0; i < n; i++)
+            {
+                totalhrs = totalhrs + (piles[i] + k-1) / k;//gets total hrs to eat all bananas based on banana rate (the equation is k basically)
+            }
+
+            if(totalhrs <= h)
+            {
+                answer = k;
+                right = k-1;
+            }
+            else
+            {
+                left = k+1;
+            }
+        }
+        return answer;
+    }
+}
+/*problem logic. need to find min hrs that all bananas can be eaten when under the mentioned conditions. we know that if we find the max of the array and set that as our k, we'll hit at least h, but can we do better than that? we set left to 1 (cuz can't eat 0 bananas) and right = max (cuz we know that many will get us to h hrs at least). we hit the same while loop condition. then we need a long int, as ints for this problem can get outragously long. what for? at each pile in the array, need to calculate how long it takes to eat that pile per k we found, and we need to keep a running total of this. so if k = 15, and it takes 30 hrs total when h = 8, its prob not the best move. totalhrs holds this. we compare it against h, and if its <=, its valid, we store it, and move k to 1 below right (k-1), as we now need to see if it could be even lower. if not however, then we move left up 1 (k+1) as our current k is > h and that's not valid, so we need to move towards a range that is.
+RT: O(nlog(m)). BS runs over speeds 1 - m, so log(m) guesses, and each guess loops over n piles. SC: O(1), nun was ever built, only vars hold stuff. */
