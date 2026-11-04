@@ -1,0 +1,25 @@
+class Solution {
+    public int findMin(int[] nums) {
+        int n = nums.length;
+        int left = 0;
+        int right = n-1;
+        int min = Integer.MAX_VALUE;
+
+        while(left <= right)
+        {
+            int mid = left + (right - left) / 2;
+            //with the reg formula, neg is not a concern for indexing
+            if(nums[mid] <= nums[right]) 
+            {
+                if(nums[mid] < min) min = nums[mid];//replace when newest min is found
+                right = mid-1;
+            }
+            else
+            {
+                left = mid+1;
+            }
+        }
+        return min;
+    }
+}
+/*problem logic thinking: array is basically 2 min arrays that each are sorted, so the min is either going to be on one side or the other. have the binary search as normal, as the mid formula will sort itself out, and negative #'s won't be a problem. compare array[mid] <= (to account for arrays with only 1 element) array[right] to see if the min is on the right side of the array. if true, then see if this is smaller than the current smallest found, and if so, replace it with the new min, and regardless, move right = mid-1. otherwise (if array[mid] > array[right]), then its probably on the otherside, min has not been found, and move left = mid+1. */
