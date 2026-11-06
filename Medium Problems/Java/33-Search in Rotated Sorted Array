@@ -1,0 +1,40 @@
+class Solution {
+    public int search(int[] nums, int target) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        while(left <= right)
+        {
+            int mid = left + (right - left) / 2;
+            if(nums[mid] == target) return mid;
+            else if(nums[left] <= nums[mid])//checking if left side is in order
+            {
+                /*have <= here, because when we have 2 element array, the left half is the left element of the 2, and we need to be able to check it under that scenerio. */
+                if(target >= nums[left] && target < nums[mid])
+                {
+                    //cheking if between left and before mid (left side of array)
+                    right = mid - 1;
+                    //range is in order, shorten the right side
+                }
+                else//target is on other side
+                {
+                    left = mid + 1;//have left start at beginning of right side of array
+                }
+            }
+            else if(nums[mid] <= nums[right])//checking if right side is in order
+            {
+                if(target <= nums[right] && target > nums[mid])
+                {
+                    //checking if between after mid and right (right side of array)
+                    left = mid + 1;//range is in order, shorten the left side
+                }
+                else
+                {
+                    right = mid - 1;//have right start at end of left side of array
+                }
+            }
+        }
+        return -1;//entire nums has been searched and nun, target doesn't exist
+    }
+}
+/*how the algo works: rotated sorted array means the array is actually 2 mini sorted arrays. because RT must be O(logn) each run needs to get rid of half of the array. once you find your mid, you need to see on what side it belongs (left or right). so you check first if your mid is target (base case), then if both left and right are actually sorted atp via if left <= mid and if mid <= right. always checking one sorted side at a time, if they are sorted, check if target is between left and mid, and then if its between mid and right. if its in either, you move the pointers accordingly (moving the right when on the left side, to shrink the total length to left side only, and moving the left when on the right side, to shrink the total length to right side only). however, still in the prior if statements, if this is not the case, then have an else that moves the pointers in the other direction, as that means that the target lives on the opposite side. the embedded else's make sure the pointers move at all, if the if's are not true*/
