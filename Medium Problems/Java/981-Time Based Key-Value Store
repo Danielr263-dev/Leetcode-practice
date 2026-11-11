@@ -107,3 +107,78 @@ class TimeMap {
  4) void set() stores the key "key" with the value at the given time "timestamp"
  5) string get() returns a value such that "set" was called previously, with timestamp_prev <= timestamp. if there are multiple such values, it returns the value associated with the largest timestamp_prev. if no values, returns ""
  */
+
+//new implementation
+/* 
+class TimeMap {
+    /*time based key-value (hashmap) struc that can store multiple values for the same key at different timestamps and retrieve the key's value at a certain timestamp.
+
+    multipe values at same key = at least hashmap of 3. (key, timestamp, val) not in this order but those are the 3 elements that make up the hashmap 
+
+    timestamps are only ever in increasing order
+    */
+    /* 
+    class Group {
+        String val;
+        int timestamp;
+        //this class is outside on its own if other classes need it, and could be nested within the only class that does, if others don't (could even be set to private static so nothing else can touch it)
+
+        Group(String val, int timestamp)//constructor
+        {
+            this.val = val;
+            this.timestamp = timestamp;
+        }
+    }
+
+    HashMap<String, ArrayList<Group>> triStructure;
+    //set it outside of any method so that all methods within class can reach it
+    public TimeMap() {
+        triStructure = new HashMap<>();//initialize DS object 
+        //want the object to have an arraylist, so that multiple entries of the same key/val can have differnt corresponding timestamps. basically so that same keys don't automatically delete new timestamp entries 
+    }
+    
+    public void set(String key, String value, int timestamp) {
+        //store key with val at timestamp
+        if(triStructure.containsKey(key))
+        {
+            //add (val, timestamp) to list pertaining to current existing key
+            triStructure.get(key).add(new Group(value, timestamp));
+        }
+        else
+        {
+            //new key, new entry entirely
+            ArrayList<Group> groups = new ArrayList<>();
+            groups.add(new Group(value, timestamp));
+            triStructure.put(key, groups);
+        }
+    }
+    
+    public String get(String key, int timestamp) {
+        //returns val (string) such that set was prev called, with prev timestamp <= timestamp. if multiple vals, return val with largest timestamp. if none, return "" 
+
+        if(!triStructure.containsKey(key)) return "";
+        //if the structure doesn't contain the key, return empty string
+        //since we're looking for the val that is the biggest out of all timestamps that are <= timestamp, we use BS to quickly find it
+        int left = 0;
+
+        ArrayList<Group> groups = triStructure.get(key);//putting the arraylist of the current key into the arraylist called groups
+
+        int right = groups.size()-1;
+        String result = "";
+        while(left <= right)
+        {
+            int mid = left + (right - left) / 2;
+            if(groups.get(mid).timestamp <= timestamp)
+            {
+                result = groups.get(mid).val;
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid-1;
+            }
+        }
+        return result;
+    }
+}
+*/  
