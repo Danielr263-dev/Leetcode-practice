@@ -1,0 +1,26 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+
+        int left = 0, right = 1;
+        int max = 0, currentMax = 0;
+        while(right < prices.length)
+        {
+            //when right runs out of bounds as it'll be moving the furthest, end the loop
+            if(prices[left] > prices[right])
+            {
+                //we set left to this new low (what right currently is) and move right +1
+                left = right;
+                right++;
+            }
+            else
+            {
+                currentMax = prices[right] - prices[left];
+                max = Math.max(currentMax, max);
+                right++;
+                //calculate the subtraction, then compare that and the max and hold the max
+            }
+        }
+        return max;
+    }
+}
+/*problem logical thinking: compare going linearly for this problem, but day of buy and sell cannot be the same, so sell day has to be at least 1 after buy. have a while loop that stops when right pointer goes beyond the array boundary. within that, if array[left] > array[right] (if buy day > sell day) when doing subtraction ur not gonna get any profit so don't even bother. that also means array[right] is currently the min of the 2, so have left = right, and move right++. otherwise, (if array[left] < array[right]) do the subtraction, then compare the current result with max and save the max of the 2. return after the loop */
