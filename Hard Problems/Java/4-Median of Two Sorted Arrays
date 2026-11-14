@@ -1,0 +1,56 @@
+class Solution {
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        //always BS the shorter array
+        if(nums1.length > nums2.length) return findMedianSortedArrays(nums2, nums1);
+
+        int m = nums1.length, n = nums2.length;
+        int half = (m+n+1)/2; //size of the combined left half
+        int low = 0, high = m; //i = how many elements of num1 go left
+
+        while(low <= high)
+        {
+            int i = low + (high - low)/2;
+            int j = half - i; //forced: i + j = half
+
+            int aLeft = (i==0) ? Integer.MIN_VALUE : nums1[i-1];
+            int aRight = (i==m) ? Integer.MAX_VALUE : nums1[i];
+            int bLeft = (j==0) ? Integer.MIN_VALUE : nums2[j-1];
+            int bRight = (j==n) ? Integer.MAX_VALUE : nums2[j];
+
+            if(aLeft <= bRight && bLeft <= aRight) //valid split
+            {
+                if((m+n) % 2 == 1) return Math.max(aLeft, bLeft);
+                return ((double) Math.max(aLeft, bLeft) + Math.min(aRight, bRight)) / 2.0;
+            }
+            else if(aLeft > bRight)
+            {
+                high = i - 1; //took too many from nums1
+            }
+            else
+            {
+                low = i + 1;
+            }
+        }
+        return 0.0; //unreachable for valid input
+    }
+}
+/* problem logic thinking: O(log(m+n)) rules out any building whatsoever. Merged array isn't 
+needed (or possible), only need to know where the median cuts it into the left and right halves. 
+Left half has to be a fixed size (m+n+1)/2, and +1 makes left side take an extra element on odd 
+totals so the median is always the largest value on the left (odd case) or the average of the 
+largest on the left and smallest on the right (even case). What isn't fixed is how that left 
+half is divided between the 2 arrays, and that division is what is searched for. If you take i 
+elements from the front of the first array, the 2nd array is forced to contribute j = half - i, 
+so there's only one free variable, and it can be binary searched. Since both arrays are sorted, 
+the only values that matter at the cuts are the four neighbors: the last element of each left part
+and the first element of each right part. Each array is already ordered internally, so a split is 
+valid exactly when the 2 cross comparisons hold: aLeft <= bRight and bLeft <= aRight. When both 
+hold, everything on the left is at most everything on the right, and you read the median off 
+those 4 values. When one fails, it tells you which way to move: if aLeft > bRight, you took too 
+many from the first array, so shrink i; if bLeft > aRight, you took too few, so grow i. That's 
+an ordinary BS where the thing being tested is a split. You search the shorter array so that 
+j = half - i can never go negative or past the end of the longer one, and you use MIN_VALUE and 
+MAX_VALUE as stand-ins when a cut sits at the very start or end of an array, so those sides never 
+cause a false failure. */
+
+//STILL NEED HEAVY REVIEW 
